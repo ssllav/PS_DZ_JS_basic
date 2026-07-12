@@ -24,6 +24,5 @@ console.log(`Расстояние между точками ${lengthToDrive2}`);
 
 //Вариант с гипотенузой по Math.hypot()
 const lengthToDrive3 = Math.hypot(addressLatitude - positionLatitude, addressLongitude - positionLongitude);
-
 // Вывод 3
 console.log(`Расстояние между точками ${lengthToDrive3}`);
