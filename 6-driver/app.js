@@ -1,0 +1,1 @@
+const result = (age >= 18 && hasLicence && !isDrunk) && 'может' || 'не может';
