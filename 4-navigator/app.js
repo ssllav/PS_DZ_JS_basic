@@ -26,3 +26,37 @@ console.log(`Расстояние между точками ${lengthToDrive2}`);
 const lengthToDrive3 = Math.hypot(addressLatitude - positionLatitude, addressLongitude - positionLongitude);
 // Вывод 3
 console.log(`Расстояние между точками ${lengthToDrive3}`);
+
+
+const tasks = ['Задача 1'];
+
+function add(task) {
+    tasks.push(task);
+}
+
+function Remove(task) {
+    const index = tasks.indexOf(task);
+    if (index === -1) {
+        return;
+    }
+        return tasks.splice(index, 1);
+}
+
+function Prioritize(task) {
+    const index = tasks.indexOf(task);
+    if (!result) {
+        return;
+    }
+    tasks.unshift(result[0]);
+}
+
+
+const url = 'https://app.purpleschool.ru/courses/9/sections/127/lessons/793';
+
+function getUrlParts(url) {
+    const [protocol, _, host, ...path] = url.split('/');
+    console.log(protocol, _, host, path);
+    console.log(`Протокол: ${protocol.split(':')[0] }`);
+    console.log(`Хост: ${host}`);
+    console.log(`Линк: /${path.join('/')}`);
+}
