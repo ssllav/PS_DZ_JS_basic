@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор договоров по БЭМ</title>
+    <!-- Подключаем внешние библиотеки для работы с DOCX в браузере -->
+    <script src="./docxtemplater.js"></script>
+    <script src="./pizzip.min.js"></script>
+    
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        
+        /* Блок приложения */
+        .manager-panel { max-width: 900px; margin: 20px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        /* Элемент: Секция/Карточка */
+        .manager-panel__section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 12px; }
+        .manager-panel__section--full-width { grid-column: 1 / -1; }
+        
+        /* Элементы управления */
+        .manager-panel__title { margin: 0 0 10px 0; font-size: 18px; border-bottom: 2px solid #007acc; padding-bottom: 5px; }
+        .manager-panel__textarea { width: 100%; height: 250px; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: none; font-size: 14px; }
+        .manager-panel__file-input { padding: 10px 0; }
+        
+        /* Кнопки и их БЭМ-модификаторы */
+        .manager-panel__button { padding: 12px 20px; background-color: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: background-color 0.2s; }
+        .manager-panel__button:hover { background-color: #005999; }
+        .manager-panel__button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        .manager-panel__button--action-parse { background-color: #28a745; }
+        .manager-panel__button--action-parse:hover { background-color: #218838; }
+        .manager-panel__button--state-loading { background-color: #ff9800 !important; }
+        
+        /* Блок интерактивной таблицы реквизитов */
+        .requisites-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .requisites-table__row { border-bottom: 1px solid #eee; }
+        .requisites-table__cell { padding: 8px 4px; font-size: 14px; }
+        .requisites-table__cell--label { width: 35%; font-weight: 500; color: #666; }
+        .requisites-table__input { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-family: inherit; }
+        .requisites-table__input:focus { border-color: #007acc; outline: none; background-color: #f9fbfd; }
+    </style>
+</head>
+<body>
+
+    <main class="manager-panel">
+        
+        <!-- Слой 1: Ввод грязного текста -->
+        <section class="manager-panel__section">
+            <h3 class="manager-panel__title">1. Источник (Текстовый хаос)</h3>
+            <textarea class="manager-panel__textarea" id="rawText" placeholder="Вставьте сюда письмо, карточку, реквизиты со слэшами ИНН/КПП, р/с и т.д."></textarea>
+            <button class="manager-panel__button manager-panel__button--action-parse" id="parseBtn">Распознать ИИ</button>
+        </section>
+
+        <!-- Слой 2: Интерактивный буфер (Таблица контроля) -->
+        <section class="manager-panel__section">
+            <h3 class="manager-panel__title">2. Верификация данных (Проверка глазами)</h3>
+            <table class="requisites-table">
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Полное наим.</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-fullName"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Сокр. наим.</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-shortName"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Юр. адрес</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-legalAddress"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Почт. адрес</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-postalAddress"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">ИНН</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-inn"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">КПП</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-kpp"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">ОГРН</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-ogrn"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Наик. банка</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-bankName"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Расч. счет (р/с)</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-rs"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Корр. счет (к/с)</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-ks"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">БИК банка</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-bik"></td>
+                </tr>
+                                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Директор</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-director"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Телефон</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-phone"></td>
+                </tr>
+                <tr class="requisites-table__row">
+                    <td class="requisites-table__cell requisites-table__cell--label">Email</td>
+                    <td class="requisites-table__cell"><input class="requisites-table__input" type="text" id="field-email"></td>
+                </tr>
+
+            </table>
+        </section>
+
+        <!-- Слой 3: Финальная генерация Word -->
+        <section class="manager-panel__section manager-panel__section--full-width">
+            <h3 class="manager-panel__title">3. Экспорт в шаблон</h3>
+            <label for="templateFile">Выберите ваш файл Шаблон.docx (переменные пишутся плотно, например {{inn}}, {{fullName}}):</label>
+            <input class="manager-panel__file-input" type="file" id="templateFile" accept=".docx">
+            <button class="manager-panel__button" id="buildWordBtn">Сгенерировать и скачать документ Word (.docx)</button>
+        </section>
+
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
