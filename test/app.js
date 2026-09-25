@@ -118,3 +118,40 @@ function avarageOperations (arrOfOperations, initioalbalance) {
 }
 
 console.log(avarageOperations (operations, iniBalance));
+
+
+
+function add (a, b) {
+    return a + b;
+}
+
+function subtract (a, b) {
+    return a - b;
+}
+
+/*callback - вызов функции через переданную функцию чтобы вернуло согласно переданной функции*/
+function calc (a, b, fn) {
+    console.log(fn.name);
+    const res = fn(a, b);
+    return res;
+}
+
+let res1 = calc (3, 5, add);
+console.log(res1);
+res1 = calc(3, 5, subtract);
+console.log(res1);
+
+
+function power(pow) {
+    return function (num) {
+        return num**pow;
+    }
+}
+
+const powerOfTwo = power(2);
+console.log(powerOfTwo(5));
+
+const powerOfThree= power(3);
+console.log(powerOfThree(5));
+
+console.log(power(2)(10));
