@@ -1,12 +1,12 @@
 
 
-for(let i = 1; i < 10; i = i + 1) {
-console.log(`Ваш баланс: ${i} по 1$`);
+for (let i = 1; i < 10; i = i + 1) {
+    console.log(`Ваш баланс: ${i} по 1$`);
 }
 
-const tasks = ['TarotCard1', 'TarotCard2', 'TarotCard3' ];
+const tasks = ['TarotCard1', 'TarotCard2', 'TarotCard3'];
 
-for(let i = 0; i < tasks.length; i++) {
+for (let i = 0; i < tasks.length; i++) {
     if (tasks[i] === 'TarotCard2') {
         continue;
     }
@@ -16,13 +16,13 @@ for(let i = 0; i < tasks.length; i++) {
 
 console.log(`-----`);
 
-const tasko = ['TarotCard1', 'TarotCard2', 'TarotCard3' ];
+const tasko = ['TarotCard1', 'TarotCard2', 'TarotCard3'];
 
-for(let i = 0; i < tasko.length; i++) {
+for (let i = 0; i < tasko.length; i++) {
     if (tasko[i] === 'TarotCard2') {
         break;
     }
-    
+
     console.log(tasko[i]);
 }
 
@@ -43,15 +43,15 @@ console.log(arr.reverse().join(' '));
 console.log(`-----`);
 const cardDeck = [[0, 'fool'], [1, 'mage'], [2, 'low empress']]
 
-for (let j = 0; j < cardDeck.length; j++){
+for (let j = 0; j < cardDeck.length; j++) {
     console.log(`Cycle 1 - ${j}`);
-        for ( let z = 0; z < cardDeck[j].length; z++) {
-            console.log(cardDeck[j][z]);
-        }
+    for (let z = 0; z < cardDeck[j].length; z++) {
+        console.log(cardDeck[j][z]);
+    }
 }
 
 let x = 0;
-while ( x < 5) {
+while (x < 5) {
     console.log(x);
     x++;
 }
@@ -72,7 +72,7 @@ console.log(`-----`);
 const operations = [1000, -700, 300, -500, 10000];
 const iniBalance = 100;
 
-function getBalance (arrOfOperations, initioalbalance) {
+function getBalance(arrOfOperations, initioalbalance) {
     let balance = initioalbalance;
     for (const element of arrOfOperations) {
         balance += element;
@@ -82,7 +82,7 @@ function getBalance (arrOfOperations, initioalbalance) {
 
 console.log(getBalance(operations, iniBalance));
 
-function checkPositiveOperations (arrOfOperations, iniBalance) {
+function checkPositiveOperations(arrOfOperations, iniBalance) {
     let balance = iniBalance;
     let isOk = true;
 
@@ -96,9 +96,9 @@ function checkPositiveOperations (arrOfOperations, iniBalance) {
     return isOk;
 }
 
-console.log(checkPositiveOperations (operations, iniBalance));
+console.log(checkPositiveOperations(operations, iniBalance));
 
-function avarageOperations (arrOfOperations, initioalbalance) {
+function avarageOperations(arrOfOperations, initioalbalance) {
     let positiveCounts = 0;
     let negativeCounts = 0;
     let positiveCountsSum = 0;
@@ -117,41 +117,53 @@ function avarageOperations (arrOfOperations, initioalbalance) {
     return [positiveCountsSum / positiveCounts, negativeCountsSum / negativeCounts];
 }
 
-console.log(avarageOperations (operations, iniBalance));
+console.log(avarageOperations(operations, iniBalance));
 
 
 
-function add (a, b) {
+function add(a, b) {
     return a + b;
 }
 
-function subtract (a, b) {
+function subtract(a, b) {
     return a - b;
 }
 
-/*callback - вызов функции через переданную функцию чтобы вернуло согласно переданной функции*/
-function calc (a, b, fn) {
+/*callback - вызов функции через переданную функцию чтобы вернуло по ссылке согласно переданной функции*/
+function calc(a, b, fn) {
     console.log(fn.name);
     const res = fn(a, b);
     return res;
 }
 
-let res1 = calc (3, 5, add);
+let res1 = calc(3, 5, add);
 console.log(res1);
 res1 = calc(3, 5, subtract);
 console.log(res1);
 
 
-function power(pow) {
+function power(degree) {
     return function (num) {
-        return num**pow;
+        return num ** degree;
     }
 }
 
 const powerOfTwo = power(2);
 console.log(powerOfTwo(5));
 
-const powerOfThree= power(3);
+const powerOfThree = power(3);
 console.log(powerOfThree(5));
 
 console.log(power(2)(10));
+
+
+const power = pow => num => num ** pow;
+
+
+function safeExecute(fn, x) {
+    if (typeof fn === 'function' && x > - 100 || x < 100) {
+        return fn(x);
+    } else {
+        return "Not a function";
+    }
+}
