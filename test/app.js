@@ -167,3 +167,158 @@ function safeExecute(fn, x) {
         return "Not a function";
     }
 }
+
+
+/*foreach*/
+
+const someGame = [2, 25, 23, 75, 2];
+
+// for (const [i, el] of someGame.entries()){
+//     console.log(`Раунд ${i+1}: ${el}`);
+// }
+
+someGame.forEach(element => {
+    console.log(`Раунд: ${element}`);
+});
+
+someGame.forEach((element, i) => {
+    console.log(`Раунд ${i+1}: ${element}`);
+});
+
+
+/*map */
+
+const transactionsInUSD = [10, -5, 10, 200, -50];
+const transactionsInRUR = [];
+
+for (const transaction of transactionsInUSD){
+    transactionsInRUR.push(transaction * 60);
+
+}
+
+console.log(transactionsInUSD);
+console.log(transactionsInRUR);
+
+
+const transactionsInRUR2 = transactionsInUSD.map((transaction, i) => {
+    return transaction * 60;
+})
+
+console.log(transactionsInUSD);
+console.log(transactionsInRUR2);
+
+const transactionsInRUR3 = transactionsInUSD
+    .map((transaction) => transaction * 60);
+
+console.log(transactionsInUSD);
+console.log(transactionsInRUR3);
+
+
+/* filter */
+
+const operationStack = [10, -5, 10, 2, -50];
+// const positiveOperations = [];
+
+// for (const operation of operations){
+//     if (operation > 0) {
+//         positiveOperations.push(operation);
+//     }
+// }
+
+// console.log(positiveOperations);
+
+const positiveOperations = operationStack.filter(operation =>{return operation > 0});
+console.log(positiveOperations);
+
+const positiveOperationsRUB = operationStack
+        .filter(operation =>{return operation > 0})
+        .map(operation=> operation * 60);
+
+console.log(positiveOperationsRUB);
+
+/*Упражнение */
+
+const prices = [[100, 200], [120, 100], [250, 500]];
+
+const result = prices
+    .map(product => product[1] - product[0])
+    .filter(price => price > 0);
+
+console.log(result);
+
+/* reduce */
+
+const operdtio = [10, -5, 10, 200, -50];
+
+let balance = 0;
+
+for (const operation of operdtio){
+    balance += operation;
+}
+
+console.log(balance);
+
+const finalBalance = operatio.reduce((acc, operation, i) => {
+    console.log(`Итерация: ${i}, acc: ${acc}, operation: ${operation}`);
+    return acc += operation;
+}, 0);
+
+console.log(finalBalance);
+
+
+const minBalance = operatio.reduce((acc, operation ) => {
+    if (operation > acc){
+        return acc;
+    } else {
+        return operation
+    }
+}, 0);
+
+console.log(minBalance);
+
+/*среднее*/
+
+const arrForMid = [10, -5, 1200, 200, -550];
+
+const average = arrForMid.reduce((acc, el, i) => {
+    if (i != arrForMid.length - 1){
+        return acc + el;
+    } else {
+        return (acc + el) / arrForMid.length;    
+    }
+}, 0);
+
+console.log(average);
+
+
+/*разраб */
+
+const payUSD = 80;
+const projDays = 11;
+const avaHours = (11-2)*5;
+
+
+/* sort */
+
+const users = ['Вася' , 'Аня' , 'Петя' , 'Коля' , 'Ян'] ;
+console.log(users);
+users.sort();
+console.log(users); // вернёт по алфавиту
+
+
+const oper = [100 , -300 , 200 , -200 , 450] ;
+oper.sort();
+console.log(oper); // по алфавиту так как строки изначально
+
+oper.sort((a, b) => {
+    if (a > b) {
+        return 1;
+    }
+    if ( b < a ) {
+        return -1;
+    }
+});
+
+/* для чисел */
+oper.sort((a, b) => a - b );
+
